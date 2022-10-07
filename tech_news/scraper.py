@@ -4,8 +4,9 @@ from time import sleep
 
 # Requisito 1
 def fetch(url):
+    fakeHeader = {"user-agent": "Fake user-agent"}
     try:
-        response = requests.get(timeout=1, url=url)
+        response = requests.get(headers=fakeHeader, timeout=1, url=url)
         sleep(1)
         return response.text or None
     except requests.ReadTimeout:
