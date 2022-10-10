@@ -1,8 +1,7 @@
-from sqlite3 import Timestamp
-from unicodedata import category
 import requests
 from time import sleep
 from parsel import Selector
+from tech_news.database import create_news
 
 
 # Requisito 1
@@ -48,4 +47,14 @@ def scrape_noticia(html_content):
 
 # Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    tech_news = []
+    url = "https://blog.betrybe.com"
+
+    while len(tech_news) < amount:
+        for item in scrape_novidades(fetch(url)):
+            if len(tech_news) < amount:
+                tech_news.append(scrape_noticia(fetch(item)))
+        url = scrape_next_page_link(fetch(url))
+    create_news(tech_news)
+
+    return tech_news
